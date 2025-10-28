@@ -33,4 +33,30 @@ Statistical & Machine Learning Models (Next)
 
 ---
 
-## 📂 Project Structure
+**New Scripts Added**
+- Merged.py:  
+  - Loaded and cleaned three datasets — UN DESA Migration, World Bank GDP, and UNDP HDI Trends.  
+  - Standardized column names and country names.  
+  - Converted all datasets into a uniform long format (`Country`, `Year`, `Value`).  
+  - Merged them into a single file: `processed/merged_global_migration_data.csv`.  
+  - Removed missing or invalid entries.
+
+- Analysis_Merged.py:  
+  - Conducted descriptive and correlation analysis on the merged dataset.  
+  - Computed and visualized global averages (1990–2024).  
+  - Generated key plots:
+    - Correlation heatmap (`Migration`, `GDP per capita`, `HDI`)
+    - Migration vs GDP per capita
+    - Migration vs HDI
+    - Global average trends (1990–2024)
+  - Saved visual outputs under the `plots/` folder.
+
+**Results Summary**
+- Final merged dataset: **68953 records → cleaned to 66123 records → aggregated 772 records**
+- Correlation results indicate:
+  - GDP per capita and HDI are moderately correlated.
+  - Migration has weak but observable relationships with development factors.
+- Visual trends confirm steady global growth in both HDI and GDP alongside rising migrant stock.
+
+**Objective 1 Achieved**
+> Analyzed and visualized global and regional trends in international migrant stock (1990–2024), setting the foundation for regression and clustering steps (Objectives 2 & 3).
