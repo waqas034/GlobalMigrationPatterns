@@ -60,3 +60,48 @@ Statistical & Machine Learning Models (Next)
 
 **Objective 1 Achieved**
 > Analyzed and visualized global and regional trends in international migrant stock (1990–2024), setting the foundation for regression and clustering steps (Objectives 2 & 3).
+
+---
+
+
+**Objective 2 & 3: Statistical Modeling and Country Clustering**
+
+Modeling.py:
+- Imported and analyzed the cleaned merged dataset (merged_global_migration_data.csv).
+- Aggregated migration, GDP per capita, and HDI by country to remove duplication.
+- Conducted Multiple Linear Regression (OLS) using statsmodels to assess how GDP per capita and HDI influence migration levels.
+- Applied K-Means Clustering (k=3) to group countries based on development and migration characteristics.
+
+Generated regression and clustering plots:
+- Regression: Migration vs GDP per capita
+- Regression: Migration vs HDI
+- Country Clusters (Migration vs GDP)
+- Country Clusters (Migration vs HDI)
+
+- Saved all results and figures in the plots/ directory.
+
+**Results Summary (Objectives 2 & 3)**
+
+- Regression results showed a very weak statistical relationship between migration and the two predictors (GDP per capita and HDI).
+- R² = 0.002, p-value > 0.05 → indicates that neither variable alone strongly explains migration levels.
+- This suggests that other factors (e.g., urbanization, policies, geography, or conflict) play significant roles.
+
+K-Means clustering identified three broad groups of countries:
+- Cluster 0 – Low migration, lower GDP & HDI (developing nations).
+- Cluster 1 – Moderate migration with mid-level GDP and HDI (emerging economies).
+- Cluster 2 – High migration with strong economic and human development indicators (developed regions).
+
+- The clustering visualizations help categorize global migration patterns across different development levels.
+
+**Objective 2 Achieved**
+
+Evaluated statistical relationships between migration and key socioeconomic indicators (GDP per capita, HDI) using regression analysis.
+
+**Objective 3 Achieved**
+
+Classified countries into development–migration clusters using K-Means, highlighting global disparities and migration trends.
+
+**Next Step**
+Since, Urabanization factor remains missings in the so far work done, any other dataset related to urabnization might be added in the next step so that further useful insights can be taken out to improve the study. In this way, some strong association might be found between urbanization and migration pattern. Improvement of results can also be done in the next step.
+
+---
