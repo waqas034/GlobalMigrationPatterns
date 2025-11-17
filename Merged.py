@@ -20,7 +20,7 @@ migration_df.columns = ['Destination', 'Origin', '1990', '1995', '2000', '2005',
 migration_df = migration_df.rename(columns={'Destination': 'Country'})
 migration_df = migration_df.drop(columns=['Origin'])
 
-# Convert to long format (Country, Year, Migration)
+# Convert to long format
 migration_long = migration_df.melt(id_vars=['Country'], var_name='Year', value_name='Migration')
 migration_long['Year'] = pd.to_numeric(migration_long['Year'])
 print(f"Migration data shape: {migration_long.shape}")
@@ -35,6 +35,17 @@ gdp_df["Year"] = pd.to_numeric(gdp_df["Year"], errors="coerce")
 gdp_df = gdp_df.dropna(subset=["GDP_per_capita", "Year"])
 gdp_df = gdp_df.rename(columns={"Country Name": "Country"})
 print(f"GDP data shape: {gdp_df.shape}")
+
+# === Load Urbanization Data ===
+print("Loading Urbanization Data...")
+urb_path = os.path.join(DATA_DIR, "API_SP.URB.TOTL.IN.ZS_DS2_en_csv_v2_129596.csv")
+urb_df = pd.read_csv(urb_path, skiprows=4)
+urb_df = urb_df.drop(columns=["Indicator Name", "Indicator Code"], errors="ignore")
+urb_df = urb_df.melt(id_vars=["Country Name", "Country Code"], var_name="Year", value_name="Urbanization")
+urb_df["Year"] = pd.to_numeric(urb_df["Year"], errors="coerce")
+urb_df = urb_df.dropna(subset=["Urbanization", "Year"])
+urb_df = urb_df.rename(columns={"Country Name": "Country"})
+print(f"Urbanization data shape: {urb_df.shape}")
 
 # === Load HDI Data ===
 print("Loading HDI Data...")
@@ -61,31 +72,33 @@ hdi_df["Year"] = pd.to_numeric(hdi_df["Year"], errors="coerce")
 hdi_df = hdi_df.dropna(subset=["HDI"])
 print(f"HDI data shape: {hdi_df.shape}")
 
-# === Standardize Country Names ===
+# === Clean Country Names ===
 def clean_country_name(name):
     if isinstance(name, str):
         return name.strip().replace("*", "").replace("...", "")
     return name
 
-for df in [migration_long, gdp_df, hdi_df]:
+for df in [migration_long, gdp_df, hdi_df, urb_df]:
     df["Country"] = df["Country"].apply(clean_country_name)
 
-# === Merge all datasets ===
+# === Merge datasets ===
 print("Merging datasets...")
 merged_df = migration_long.merge(gdp_df, on=["Country", "Year"], how="inner")
 merged_df = merged_df.merge(hdi_df, on=["Country", "Year"], how="inner")
+merged_df = merged_df.merge(urb_df, on=["Country", "Year"], how="inner")
+
 print(f"Merged data shape: {merged_df.shape}")
 
-# === Handle missing values ===
+# === Remove missing ===
 missing_before = merged_df.isna().sum().sum()
-merged_df = merged_df.dropna(subset=["Migration", "GDP_per_capita", "HDI"])
+merged_df = merged_df.dropna(subset=["Migration", "GDP_per_capita", "HDI", "Urbanization"])
 missing_after = merged_df.isna().sum().sum()
-print(f"Missing values removed: {missing_before - missing_after}")
+print(f"Missing removed: {missing_before - missing_after}")
 
-# === Save merged dataset ===
+# === Save final merged file ===
 output_file = os.path.join(OUTPUT_DIR, "merged_global_migration_data.csv")
 merged_df.to_csv(output_file, index=False)
 print(f"Merged dataset saved at: {output_file}")
 
-print("\nSample of merged data:")
+print("\nSample:")
 print(merged_df.head())
