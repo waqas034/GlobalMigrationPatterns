@@ -101,7 +101,42 @@ Evaluated statistical relationships between migration and key socioeconomic indi
 
 Classified countries into development–migration clusters using K-Means, highlighting global disparities and migration trends.
 
-**Next Step**
-Since, Urabanization factor remains missings in the so far work done, any other dataset related to urabnization might be added in the next step so that further useful insights can be taken out to improve the study. In this way, some strong association might be found between urbanization and migration pattern. Improvement of results can also be done in the next step.
+---
+
+**Updates Completed Today**
+1. Urbanization Dataset Integrated
+- Loaded the World Bank Urban Population (% of total population) dataset.
+- Cleaned dataset.
+- Converted year columns to numeric and reshaped data into long format.
+- Merged Urbanization with Migration, GDP per capita, and HDI into the unified dataset.
+- Added Urbanization to the aggregated country-level dataset for analysis.
+
+2. Enhanced Exploratory Data Analysis (EDA)
+- Added Urbanization to the correlation heatmap (Migration, GDP, HDI, Urbanization).
+- Created a new scatter plot: Migration vs Urbanization.
+- Updated global trend plots to include Urbanization (1990–2024).
+- Regenerated and saved all updated plots in the plots/ directory.
+
+3. New Models Implemented
+- **Extra Trees Regressor**
+- **Gradient Boosting Regressor**
+- **Hierarchical Clustering**
+
+4. Added and Updated all necessary files
+- Updated Merged.py
+- Udpated Analysis_Merged.py
+- Updated Modeling.py
+- Added EDA_Urbanization.py
+- Added Comparison.py
+
+5. All necessary coding completed
+
+**Next Steps**
+Project completed but yet in a temptative stage, which will be reviewed and updated after taking feedback.
 
 ---
+
+
+
+4. Feature importance charts for all models
+
