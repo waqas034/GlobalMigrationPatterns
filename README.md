@@ -1,142 +1,85 @@
 **Impact of Urbanization and Income Levels on Global Migration Patterns: A Statistical Analysis Using UN International Migrant Stock (1990–2024) and HDI Trends**
 
-Project Overview
+**Project Overview**
 This project investigates how urbanization and income levels influence global migration patterns between 1990 and 2024.
 By integrating data from the United Nations (UN DESA), World Bank, and UNDP Human Development Reports, this study aims to uncover relationships between migration trends, socioeconomic development, and urban growth.
 
-
-
-Datasets Used
+**Datasets Used**
 1. UN DESA International Migrant Stock (1990–2024)
    - Source: [UN Data Portal](https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd/files/undesa_pd_2024_ims_stock_by_sex_destination_and_origin.xlsx)  
    - Data on migrant stock by destination/origin and year.
 
 2. World Bank Development Indicators
-   - Source: [World Bank API](https://api.worldbank.org/v2/en/indicator/NY.GDP.PCAP.CD?downloadformat=csv)  
+   - Source: [World Bank API](https://api.worldbank.org/v2/en/indicator/NY.GDP.PCAP.CD?downloadformat=csv)
+             [World Bank API](https://api.worldbank.org/v2/en/indicator/SP.URB.TOTL.IN.ZS?downloadformat=csv)
    - Includes GDP per capita and urban population (%).
 
 3. UNDP Human Development Index (HDI) Trends (1990–2023)
    - Source: [UNDP HDR 2025 Statistical Annex – HDI Trends](https://hdr.undp.org/sites/default/files/2025_HDR/HDR25_Statistical_Annex_HDI_Trends_Table.xlsx)  
 
+**Data Preparation and Integration**
+- All datasets were converted from wide to long format (Country, Year, Value) using pandas melt.
+- Country names were standardized to ensure consistency across sources.
+- Non-numeric values and missing records were removed.
+- Time periods were aligned to create a consistent Country–Year panel.
+- Migration data were aggregated at the destination-country level to obtain total migrant stock per country per year.
+- The final merged dataset contains over 68,000 country–year observations covering Migration, GDP per capita, HDI, and Urbanization.
 
-Exploratory Data Analysis (EDA)
-   - Descriptive statistics and visualizations using `pandas`, `matplotlib`, and `seaborn`.  
-   - Global and regional migration trend plots (1990–2024).  
-   - Correlation heatmaps for migration vs. development indicators.  
-   - Scatter plots for HDI, GDP, and urbanization relationships with migration.
+**Exploratory Data Analysis (EDA)**
+EDA was conducted using pandas, matplotlib, and seaborn to understand trends and relationships:
+- Global migration trends from 1990–2024.
+- Correlation heatmaps between migration and socioeconomic indicators.
+- Scatter plots showing migration versus GDP per capita, HDI, and urbanization.
+- Distribution plots and temporal trends for GDP, HDI, urbanization, and migration.
 
-Statistical & Machine Learning Models (Next)
-   - Regression Analysis:** Multiple and panel regression to assess impacts on migration stock.  
-   - Clustering:** K-Means and Hierarchical Clustering to group countries with similar migration-development profiles.
+**Statistical and Machine Learning Analysis**
+*Regression Analysis*
+- Ordinary Least Squares (OLS) regression was used as a baseline.
+- Diagnostic results indicated very low explanatory power, multicollinearity, and non-linear relationships.
+- OLS was therefore deemed unsuitable for this dataset.
 
-
-
----
-
-**New Scripts Added**
-- Merged.py:  
-  - Loaded and cleaned three datasets — UN DESA Migration, World Bank GDP, and UNDP HDI Trends.  
-  - Standardized column names and country names.  
-  - Converted all datasets into a uniform long format (`Country`, `Year`, `Value`).  
-  - Merged them into a single file: `processed/merged_global_migration_data.csv`.  
-  - Removed missing or invalid entries.
-
-- Analysis_Merged.py:  
-  - Conducted descriptive and correlation analysis on the merged dataset.  
-  - Computed and visualized global averages (1990–2024).  
-  - Generated key plots:
-    - Correlation heatmap (`Migration`, `GDP per capita`, `HDI`)
-    - Migration vs GDP per capita
-    - Migration vs HDI
-    - Global average trends (1990–2024)
-  - Saved visual outputs under the `plots/` folder.
-
-**Results Summary**
-- Final merged dataset: **68953 records → cleaned to 66123 records → aggregated 772 records**
-- Correlation results indicate:
-  - GDP per capita and HDI are moderately correlated.
-  - Migration has weak but observable relationships with development factors.
-- Visual trends confirm steady global growth in both HDI and GDP alongside rising migrant stock.
-
-**Objective 1 Achieved**
-> Analyzed and visualized global and regional trends in international migrant stock (1990–2024), setting the foundation for regression and clustering steps (Objectives 2 & 3).
-
----
-
-
-**Objective 2 & 3: Statistical Modeling and Country Clustering**
-
-Modeling.py:
-- Imported and analyzed the cleaned merged dataset (merged_global_migration_data.csv).
-- Aggregated migration, GDP per capita, and HDI by country to remove duplication.
-- Conducted Multiple Linear Regression (OLS) using statsmodels to assess how GDP per capita and HDI influence migration levels.
-- Applied K-Means Clustering (k=3) to group countries based on development and migration characteristics.
-
-Generated regression and clustering plots:
-- Regression: Migration vs GDP per capita
-- Regression: Migration vs HDI
-- Country Clusters (Migration vs GDP)
-- Country Clusters (Migration vs HDI)
-
-- Saved all results and figures in the plots/ directory.
-
-**Results Summary (Objectives 2 & 3)**
-
-- Regression results showed a very weak statistical relationship between migration and the two predictors (GDP per capita and HDI).
-- R² = 0.002, p-value > 0.05 → indicates that neither variable alone strongly explains migration levels.
-- This suggests that other factors (e.g., urbanization, policies, geography, or conflict) play significant roles.
-
-K-Means clustering identified three broad groups of countries:
-- Cluster 0 – Low migration, lower GDP & HDI (developing nations).
-- Cluster 1 – Moderate migration with mid-level GDP and HDI (emerging economies).
-- Cluster 2 – High migration with strong economic and human development indicators (developed regions).
-
-- The clustering visualizations help categorize global migration patterns across different development levels.
-
-**Objective 2 Achieved**
-
-Evaluated statistical relationships between migration and key socioeconomic indicators (GDP per capita, HDI) using regression analysis.
-
-**Objective 3 Achieved**
-
-Classified countries into development–migration clusters using K-Means, highlighting global disparities and migration trends.
-
----
-
-**Updates Completed Today**
-1. Urbanization Dataset Integrated
-- Loaded the World Bank Urban Population (% of total population) dataset.
-- Cleaned dataset.
-- Converted year columns to numeric and reshaped data into long format.
-- Merged Urbanization with Migration, GDP per capita, and HDI into the unified dataset.
-- Added Urbanization to the aggregated country-level dataset for analysis.
-
-2. Enhanced Exploratory Data Analysis (EDA)
-- Added Urbanization to the correlation heatmap (Migration, GDP, HDI, Urbanization).
-- Created a new scatter plot: Migration vs Urbanization.
-- Updated global trend plots to include Urbanization (1990–2024).
-- Regenerated and saved all updated plots in the plots/ directory.
-
-3. New Models Implemented
+*Machine Learning Models*
+To capture non-linear relationships and interactions:
+- **Random Forest Regressor**
 - **Extra Trees Regressor**
 - **Gradient Boosting Regressor**
-- **Hierarchical Clustering**
 
-4. Added and Updated all necessary files
-- Updated Merged.py
-- Udpated Analysis_Merged.py
-- Updated Modeling.py
-- Added EDA_Urbanization.py
-- Added Comparison.py
+Feature importance from all three models consistently identified HDI as the strongest predictor of migrant stock, followed by urbanization and GDP per capita.
 
-5. All necessary coding completed
+*Clustering Analysis*
+To identify groups of countries with similar migration–development characteristics:
+- **K-Means clustering** (k = 3) was applied to standardized country-level indicators.
+- Cluster quality was evaluated using the silhouette score.
+- **Hierarchical clustering** (Ward method) was used to validate and interpret cluster structure via a dendrogram.
 
-**Next Steps**
-Project completed but yet in a temptative stage, which will be reviewed and updated after taking feedback.
+Both methods produced consistent clusters representing:
+- Low development / low migration countries
+- High development / high migration countries
+- Intermediate development countries
 
----
+**Scripts Included**
 
+*EDA_GDA.py*. *EDA_HDI.py*, *EDA_Migration.py*, *EDA_Urbanization.py* 
+Separate exploratory scripts for Migration, GDP, HDI, and Urbanization, respectively.
 
+*Merged.py*
+Loads, cleans, reshapes, and merges all datasets into a unified Country–Year panel.
 
-4. Feature importance charts for all models
+*Analysis_Merged.py*
+Performs descriptive analysis, correlation analysis, and global trend visualization.
 
+*Modeling.py*
+Implements OLS regression, tree-based machine learning models, K-Means clustering, and hierarchical clustering, and generates all modeling visualizations.
+
+*Comparison.py*
+Side-by-side comparison of Feature importance across Random Forest, Extra Trees and Gradient Boosting, with Average cluster characteristics from K-Means and Hierarchical clustering. This confirms consistency and robustness of results across models.
+
+**Outputs**
+- Cleaned merged dataset (processed/merged_global_migration_data.csv)
+- Country-level modeling results (processed/model_results_country_level.csv)
+- All figures saved in the plots/ directory
+
+**Summary**
+- Global and regional migration trends analyzed (1990–2024)
+- Relationships between migration and development indicators evaluated
+- Countries clustered by migration–development patterns
